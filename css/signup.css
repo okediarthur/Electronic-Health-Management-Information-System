@@ -1,4 +1,4 @@
-/* Login screen styles */
+/* Sign-up screen styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -42,6 +42,7 @@ body {
     color: #2c3e50;
 }
 
+.auth-container input[type="email"],
 .auth-container input[type="text"],
 .auth-container input[type="password"] {
     width: calc(100% - 20px); /* Adjust input width */
@@ -52,13 +53,8 @@ body {
     font-size: 16px;
 }
 
-.auth-container .button-row {
-    display: flex;
-    justify-content: space-between;
-}
-
-.auth-container .button-row button {
-    width: 48%;
+.auth-container button {
+    width: 100%;
     padding: 12px;
     border: none;
     background-color: #007bff;
@@ -68,11 +64,21 @@ body {
     font-size: 16px;
 }
 
-.auth-container .button-row button:hover {
+.auth-container button:hover {
     background-color: #0056b3;
 }
 
-.error-message {
-    color: red;
+.login-redirect {
     margin-top: 10px;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+.login-redirect a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-redirect a:hover {
+    text-decoration: underline;
 }

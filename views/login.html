@@ -3,49 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - E-Health System</title>
-    <link rel="stylesheet" href="../css/login.css">
+    <title>e-Health System - Login</title>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
     <div class="container">
         <div class="auth-container">
-            <h1>E-Health System</h1>
-            <div id="login-form-container">
-                <h2>Login</h2>
-                <form id="login-form">
-                    <label for="login-username">Username</label>
-                    <input type="text" id="login-username" name="username" required>
-                    
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" name="password" required>
-                    
-                    <div class="button-row">
-                        <button type="submit">Login</button>
-                        <button id="open-signup-modal" type="button">Sign Up</button>
-                    </div>
-                </form>
-                <div id="login-error-message" class="error-message"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="signup-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Sign Up</h2>
-            <form id="signup-form">
-                <label for="signup-username">Username</label>
-                <input type="text" id="signup-username" name="username" required>
-                
-                <label for="signup-password">Password</label>
-                <input type="password" id="signup-password" name="password" required>
-                
-                <button type="submit">Sign Up</button>
+            <h1>e-Health System</h1>
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <div class="button-row">
+                    <button type="submit">Login</button>
+                    <button type="button" id="open-signup">Sign Up</button>
+                </div>
             </form>
-            <div id="signup-error-message" class="error-message"></div>
+            <div id="login-error-message" class="error-message"></div>
         </div>
     </div>
-
-    <script src="../js/login.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 </html>
