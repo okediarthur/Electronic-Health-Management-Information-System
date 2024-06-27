@@ -1,23 +1,63 @@
-function scanQRCode() {
-    const qrInput = document.getElementById('qrInput').value;
+// app.js or scan.js
+async function scanQRCode() {
+    const qrCode = document.getElementById('qrInput').value;
+    try {
+        const response = await fetch(`/api/patients/${qrCode}`);
+        if (!response.ok) {
+            throw new Error('Patient not found');
+        }
+        const patient = await response.json();
+        populatePatientForm(patient);
+    } catch (error) {
+        console.error('Error fetching patient data:', error);
+        alert('Patient not found or server error');
+    }
+}
 
-    // Simulate scanning QR code and retrieving data
-    const patientData = {
-        name: "John Doe",
-        age: 30,
-        dateOfRegistration: "2022-01-01",
-        dateOfRecentMedication: "2023-01-01",
-        dateOfNextMedication: "2023-06-01",
-        address: "123 Main St",
-        phoneNumber: "123-456-7890",
-        nextOfKin: "Jane Doe",
-        nextOfKinContact: "098-765-4321",
-        prescription: "Medication A",
-        dosage: "2 pills daily"
-    };
+function populatePatientForm(patient) {
+    document.getElementById('name').value = patient.name;
+    document.getElementById('age').value = patient.age;
+    // Populate other fields similarly
+    document.getElementById('patientInfo').style.display = 'block';
+}
 
-    document.getElementById('qrResult').innerHTML = "QR Code Scanned: " + qrInput;
-    setTimeout(() => {
-        window.location.href = 'patient.html'; // Navigate to patient information page
-    }, 1000);
+async function savePatient() {
+    const qrCode = document.getElementById('qrInput').value;
+    const formData = new FormData(document.getElementById('patientForm'));
+    const patientData = Object.fromEntries(formData);
+
+    try {
+        const response = await fetch(`/api/patients/${qrCode}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(patientData)
+        });
+        if (!response.ok) {
+            throw new Error('Failed to save patient data');
+        }
+        const updatedPatient = await response.json();
+        populatePatientForm(updatedPatient);
+        alert('Patient data updated successfully');
+    } catch (error) {
+        console.error('Error saving patient data:', error);
+        alert('Failed to save patient data');
+    }
+}
+
+function editPatient() {
+    // Enable editing of input fields
+    const form = document.getElementById('patientForm');
+    Array.from(form.elements).forEach(input => {
+        if (input.tagName.toLowerCase() === 'input' && input.id !== 'qrInput') {
+            input.removeAttribute('readonly');
+        }
+    });
+}
+
+function exitPatient() {
+    // Reset form and hide patient info
+    document.getElementById('patientForm').reset();
+    document.getElementById('patientInfo').style.display = 'none';
 }

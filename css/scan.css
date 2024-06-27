@@ -1,61 +1,73 @@
-/* Scan screen styles */
+/* scan.css */
+
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
+    background: linear-gradient(to right, #74ebd5, #ACB6E5); /* Gradient background */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to right, #74ebd5, #ACB6E5);
+    margin: 0;
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.qr-container {
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    text-align: center;
-    max-width: 400px;
     width: 100%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.qr-container h2 {
+h1 {
     margin-bottom: 20px;
-    color: #2c3e50;
+    color: #007BFF; /* Blue color for headings */
+    text-align: center;
 }
 
-.qr-container input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.qr-container button {
+input[type="text"],
+input[type="number"],
+button {
     width: 100%;
     padding: 12px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
-    cursor: pointer;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 16px;
 }
 
-.qr-container button:hover {
-    background-color: #0056b3;
+input[type="text"],
+input[type="number"] {
+    padding: 10px;
 }
 
-#qrResult {
-    margin-top: 10px;
-    color: #2c3e50;
+button {
+    background-color: #007BFF; /* Blue background color for buttons */
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+#patientInfo {
+    margin-top: 20px;
+    display: none;
+}
+
+#patientInfo h2 {
+    color: #007BFF; /* Blue color for headings */
+    margin-bottom: 10px;
+}
+
+#patientForm div {
+    margin-bottom: 10px;
+}
+
+#patientForm label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
 }

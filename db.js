@@ -1,21 +1,18 @@
 const mongoose = require('mongoose');
+require('dotenv').config(); // Load environment variables from .env file
 
-mongoose.connect('mongodb://localhost:27017/e-health-system', { useNewUrlParser: true, useUnifiedTopology: true });
+const mongoURI = process.env.MONGO;
 
-const patientSchema = new mongoose.Schema({
-    name: String,
-    age: Number,
-    dateOfRegistration: Date,
-    dateOfRecentMedication: Date,
-    dateOfNextMedication: Date,
-    address: String,
-    phoneNumber: String,
-    nextOfKin: String,
-    nextOfKinContact: String,
-    prescription: String,
-    dosage: String
+mongoose.connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
 
-const Patient = mongoose.model('Patient', patientSchema);
+const db = mongoose.connection;
 
-module.exports = Patient;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+    console.log('Connected to MongoDB');
+});
+
+module.exports = db;
