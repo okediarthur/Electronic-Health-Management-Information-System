@@ -22,17 +22,41 @@ db.once('open', () => {
     console.log('Connected to MongoDB');
 });
 
+// Import Patient model (adjust the path as needed)
+const Patient = require('./models/patient.model');
+
 // Routes
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'login.html'))
+    res.sendFile(path.join(__dirname, 'views', 'login.html'));
 });
 
 app.get('/scan', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'scan.html'))
+    res.sendFile(path.join(__dirname, 'views', 'scan.html'));
 });
 
+// Example API endpoint to fetch patient data by QR code
+app.get('/api/patient', async (req, res) => {
+    const { qrCode } = req.query;
+
+    try {
+        // Find patient by QR code in MongoDB
+        const patient = await Patient.findOne({ qrCode });
+
+        if (!patient) {
+            return res.status(404).json({ error: 'Patient not found' });
+        }
+
+        // Return patient data
+        res.json(patient);
+    } catch (err) {
+        console.error('Error fetching patient:', err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Serve patient.html and patient.js (for displaying patient data)
 app.get('/patient', (req, res) => {
-    res.sendFile(path.join(__dirname, 'views', 'patient.html'))
+    res.sendFile(path.join(__dirname, 'views', 'patient.html'));
 });
 
 app.listen(PORT, () => {

@@ -1,63 +1,35 @@
-// app.js or scan.js
-async function scanQRCode() {
-    const qrCode = document.getElementById('qrInput').value;
-    try {
-        const response = await fetch(`/api/patients/${qrCode}`);
-        if (!response.ok) {
-            throw new Error('Patient not found');
+document.addEventListener('DOMContentLoaded', () => {
+    const videoElem = document.createElement('video');
+    const interactiveElem = document.getElementById('interactive');
+    interactiveElem.appendChild(videoElem);
+
+    Quagga.init({
+        inputStream: {
+            name: "Live",
+            type: "LiveStream",
+            target: videoElem
+        },
+        decoder: {
+            readers: ["ean_reader", "ean_8_reader", "code_39_reader", "code_39_vin_reader", "codabar_reader", "upc_reader", "upc_e_reader", "i2of5_reader", "2of5_reader", "code_93_reader"],
         }
-        const patient = await response.json();
-        populatePatientForm(patient);
-    } catch (error) {
-        console.error('Error fetching patient data:', error);
-        alert('Patient not found or server error');
-    }
-}
-
-function populatePatientForm(patient) {
-    document.getElementById('name').value = patient.name;
-    document.getElementById('age').value = patient.age;
-    // Populate other fields similarly
-    document.getElementById('patientInfo').style.display = 'block';
-}
-
-async function savePatient() {
-    const qrCode = document.getElementById('qrInput').value;
-    const formData = new FormData(document.getElementById('patientForm'));
-    const patientData = Object.fromEntries(formData);
-
-    try {
-        const response = await fetch(`/api/patients/${qrCode}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(patientData)
-        });
-        if (!response.ok) {
-            throw new Error('Failed to save patient data');
+    }, function (err) {
+        if (err) {
+            console.error(err);
+            return;
         }
-        const updatedPatient = await response.json();
-        populatePatientForm(updatedPatient);
-        alert('Patient data updated successfully');
-    } catch (error) {
-        console.error('Error saving patient data:', error);
-        alert('Failed to save patient data');
-    }
-}
-
-function editPatient() {
-    // Enable editing of input fields
-    const form = document.getElementById('patientForm');
-    Array.from(form.elements).forEach(input => {
-        if (input.tagName.toLowerCase() === 'input' && input.id !== 'qrInput') {
-            input.removeAttribute('readonly');
-        }
+        console.log("Initialization finished. Ready to start");
+        Quagga.start();
     });
-}
 
-function exitPatient() {
-    // Reset form and hide patient info
-    document.getElementById('patientForm').reset();
-    document.getElementById('patientInfo').style.display = 'none';
-}
+    Quagga.onDetected(function (result) {
+        const code = result.codeResult.code;
+        console.log("Decoded code:", code);
+        handleQRCodeScanResult(code); // Call your function to handle the scanned QR code result
+        Quagga.stop(); // Stop scanning after successful detection
+    });
+
+    function handleQRCodeScanResult(code) {
+        // Redirect to patient.html with the scanned QR code data as a query parameter
+        window.location.href = `/patient.html?qrCode=${encodeURIComponent(code)}`;
+    }
+});

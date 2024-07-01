@@ -1,19 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const patientData = {
-        name: "John Doe",
-        age: 30,
-        dateOfRegistration: "2022-01-01",
-        dateOfRecentMedication: "2023-01-01",
-        dateOfNextMedication: "2023-06-01",
-        address: "123 Main St",
-        phoneNumber: "123-456-7890",
-        nextOfKin: "Jane Doe",
-        nextOfKinContact: "098-765-4321",
-        prescription: "Medication A",
-        dosage: "2 pills daily"
-    };
+    const urlParams = new URLSearchParams(window.location.search);
+    const qrCode = urlParams.get('qrCode');
 
-    document.getElementById('name').value = patientData.name;
-    document.getElementById('age').value = patientData.age;
-    document.getElementById('dateOfRegistration').value = patientData.dateOfRegistration;
-    document.getElementById('dateOfRecentMedication').value = patientData.date
+    // Fetch patient data from backend
+    fetch(`/api/patient?qrCode=${encodeURIComponent(qrCode)}`)
+        .then(response => response.json())
+        .then(patient => {
+            // Populate form fields with patient data
+            document.getElementById('patient-name').value = patient.name;
+            document.getElementById('patient-age').value = patient.age;
+            document.getElementById('date-of-registration').value = patient.dateOfRegistration;
+            document.getElementById('phone-number').value = patient.phone;
+            document.getElementById('address').value = patient.address;
+            document.getElementById('next-of-kin').value = patient.nextOfKin;
+            document.getElementById('next-of-kin-contact').value = patient.nextOfKinContact;
+            document.getElementById('prescription').value = patient.prescription;
+            document.getElementById('dosage').value = patient.dosage;
+        })
+        .catch(error => console.error('Error fetching patient data:', error));
+});
